@@ -32,6 +32,7 @@ export async function analyzeWallet({
         "bnb",
         "polygon",
         "base-sepolia",
+        "solana",
     ];
 
     if (!supportedBlockchains.includes(normalizedBlockchain)) {

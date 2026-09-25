@@ -1,0 +1,251 @@
+/* =========================================
+   TRACEX NETWORK NODES
+========================================= */
+
+.trace-node {
+  min-width: 150px;
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(8, 17, 28, 0.96);
+
+  border: 1px solid rgba(91, 126, 160, 0.35);
+  border-radius: 14px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 0 25px rgba(255, 255, 255, 0.015);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.trace-node:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(79, 140, 255, 0.7);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(79, 140, 255, 0.12);
+}
+
+.trace-node-icon {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(79, 140, 255, 0.1);
+
+  font-size: 13px;
+}
+
+.trace-node-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.trace-node-type {
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: #6f8ba8;
+}
+
+.trace-node-name {
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #edf4ff;
+
+  white-space: nowrap;
+}
+
+.trace-node-address {
+  max-width: 125px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-family: monospace;
+  font-size: 9px;
+
+  color: #71859c;
+}
+
+.trace-handle {
+  width: 7px;
+  height: 7px;
+
+  background: #4f8cff;
+
+  border: 2px solid #07111c;
+}
+
+.trace-node-source .trace-handle {
+  background: #52d6a7;
+}
+
+.trace-node-suspect .trace-handle {
+  background: #ff5c5c;
+}
+
+.trace-node-intermediary .trace-handle {
+  background: #8ca0b4;
+}
+
+.trace-node-mixer .trace-handle {
+  background: #ffa64d;
+}
+
+.trace-node-exchange .trace-handle {
+  background: #4f8cff;
+}
+
+/* =========================================
+   LIGHT THEME
+========================================= */
+
+.network-map-section.light .trace-node {
+  background: rgba(255, 255, 255, 0.95);
+
+  border-color: rgba(91, 126, 160, 0.28);
+
+  box-shadow:
+    0 10px 30px rgba(20, 40, 70, 0.12),
+    inset 0 0 25px rgba(255, 255, 255, 0.6);
+}
+
+.network-map-section.light .trace-node:hover {
+  border-color: rgba(79, 140, 255, 0.65);
+
+  box-shadow:
+    0 12px 35px rgba(20, 40, 70, 0.16),
+    0 0 25px rgba(79, 140, 255, 0.12);
+}
+
+.network-map-section.light .trace-node-type {
+  color: #63748a;
+}
+
+.network-map-section.light .trace-node-name {
+  color: #172033;
+}
+
+.network-map-section.light .trace-node-address {
+  color: #718096;
+}
+
+.network-map-section.light .trace-node-icon {
+  background: rgba(79, 140, 255, 0.08);
+}
+
+/* =========================================
+   NODE TYPE ACCENTS
+========================================= */
+
+.trace-node-source .trace-node-icon {
+  background: rgba(82, 214, 167, 0.12);
+  color: #52d6a7;
+}
+
+.trace-node-source {
+  border-color: rgba(82, 214, 167, 0.35);
+}
+
+.trace-node-suspect .trace-node-icon {
+  background: rgba(255, 92, 92, 0.12);
+  color: #ff5c5c;
+}
+
+.trace-node-suspect {
+  border-color: rgba(255, 92, 92, 0.4);
+}
+
+.trace-node-intermediary .trace-node-icon {
+  background: rgba(140, 160, 180, 0.12);
+  color: #8ca0b4;
+}
+
+.trace-node-intermediary {
+  border-color: rgba(140, 160, 180, 0.3);
+}
+
+.trace-node-mixer .trace-node-icon {
+  background: rgba(255, 166, 77, 0.12);
+  color: #ffa64d;
+}
+
+.trace-node-mixer {
+  border-color: rgba(255, 166, 77, 0.55);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(255, 166, 77, 0.08);
+}
+
+.trace-node-mixer:hover {
+  border-color: rgba(255, 166, 77, 0.85);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.4),
+    0 0 28px rgba(255, 166, 77, 0.16);
+}
+
+.trace-node-exchange .trace-node-icon {
+  background: rgba(79, 140, 255, 0.12);
+  color: #4f8cff;
+}
+
+.trace-node-exchange {
+  border-color: rgba(79, 140, 255, 0.35);
+}
+
+/* =========================================
+   SELECTED NODE
+========================================= */
+
+.trace-node-selected {
+  transform: translateY(-3px);
+
+  border-color: #4f8cff !important;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.45),
+    0 0 0 2px rgba(79, 140, 255, 0.18),
+    0 0 30px rgba(79, 140, 255, 0.28);
+
+  z-index: 10;
+}
+
+
+
+/* Network context layer */
+.trace-node-layer-network {
+  opacity: 0.5;
+  transform: scale(0.9);
+}
+
+/* Investigation path */
+.trace-node-layer-investigation {
+  opacity: 1;
+  transform: scale(1);
+}

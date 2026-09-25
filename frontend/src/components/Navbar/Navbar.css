@@ -1,0 +1,152 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+
+  background: color-mix(
+    in srgb,
+    var(--bg-secondary) 88%,
+    transparent
+  );
+
+  border-bottom: 1px solid var(--border);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.navbar-inner {
+  width: min(100% - 40px, var(--container-width));
+  min-height: 72px;
+  margin-inline: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+/* ================================
+   LOGO
+   ================================ */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: var(--brand-primary);
+  color: white;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.logo-text {
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.logo-text span {
+  color: var(--brand-primary);
+}
+
+/* ================================
+   NAVIGATION
+   ================================ */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  margin-left: auto;
+}
+
+.navbar-links a {
+  position: relative;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: var(--text-secondary);
+
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+  color: var(--brand-primary);
+}
+
+/* ================================
+   ACTIONS
+   ================================ */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+
+  font-size: 17px;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-primary);
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 700px) {
+  .navbar-inner {
+    min-height: 64px;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+}

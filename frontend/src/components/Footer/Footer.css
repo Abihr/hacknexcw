@@ -1,0 +1,247 @@
+/* ========================================
+   TRACE//X — FOOTER
+   ======================================== */
+
+.footer {
+    margin-top: 80px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-secondary);
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.footer-container {
+    width: min(100% - 40px, var(--container-width));
+    margin-inline: auto;
+
+    padding: 60px 0;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr;
+    gap: 50px;
+}
+
+
+/* ========================================
+   BRAND
+   ======================================== */
+
+.footer-brand {
+    max-width: 380px;
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo-mark {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: var(--brand-primary);
+    color: white;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.footer-logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+
+    color: var(--text-primary);
+}
+
+.footer-logo-text span {
+    color: var(--brand-primary);
+}
+
+.footer-brand p {
+    margin-top: 18px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.footer-tagline {
+    display: inline-block;
+
+    margin-top: 20px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+
+/* ========================================
+   COLUMNS
+   ======================================== */
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.footer-column h4 {
+    margin-bottom: 8px;
+
+    color: var(--text-primary);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.footer-column a {
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.footer-column a:hover {
+    color: var(--brand-primary);
+    transform: translateX(3px);
+}
+
+
+/* ========================================
+   SYSTEM STATUS
+   ======================================== */
+
+.footer-system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+.footer-system-status span {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+.footer-status p {
+    color: var(--text-muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.footer-version {
+    margin-top: 4px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+/* ========================================
+   BOTTOM
+   ======================================== */
+
+.footer-bottom {
+    width: min(100% - 40px, var(--container-width));
+    margin-inline: auto;
+
+    padding: 20px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-top: 1px solid var(--border);
+}
+
+.footer-bottom p {
+    color: var(--text-muted);
+
+    font-size: 11px;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-bottom-links a {
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+    transition: color 0.2s ease;
+}
+
+.footer-bottom-links a:hover {
+    color: var(--brand-primary);
+}
+
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 850px) {
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+        max-width: 500px;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 45px 0;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+}

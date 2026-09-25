@@ -5,44 +5,42 @@ import OutputPreview from "../components/Landing/OutputPreview.jsx";
 import Features from "../components/Landing/Features.jsx";
 import FAQ from "../components/Landing/FAQ.jsx";
 import LandingCTA from "../components/Landing/LandingCTA.jsx";
-import PageTransition from "../PageTransition.jsx";
-import ScrollReveal from "../ScrollReveal.jsx";
 import LandingFooter from "../components/Landing/LandingFooter.jsx";
 
+import PageTransition from "../PageTransition.jsx";
+import ScrollReveal from "../ScrollReveal.jsx";
+
 function LandingPage() {
-    return (
-        <PageTransition>
-            <main className="landing-page">
+  return (
+    <PageTransition>
+      <main className="landing-page">
+        <LandingNavbar />
+        <LandingHero />
 
-                <LandingNavbar />
+        <ScrollReveal>
+          <HowItWorks />
+        </ScrollReveal>
 
-                <LandingHero />
+        <ScrollReveal>
+          <OutputPreview />
+        </ScrollReveal>
 
-                <ScrollReveal>
-                    <HowItWorks />
-                </ScrollReveal>
+        <ScrollReveal>
+          <Features />
+        </ScrollReveal>
 
-                <ScrollReveal>
-                    <OutputPreview />
-                </ScrollReveal>
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
 
-                <ScrollReveal>
-                    <Features />
-                </ScrollReveal>
+        <ScrollReveal>
+          <LandingCTA />
+        </ScrollReveal>
 
-                <ScrollReveal>
-                    <FAQ />
-                </ScrollReveal>
-
-                <ScrollReveal>
-                    <LandingCTA />
-                </ScrollReveal>
-
-                <LandingFooter />
-
-            </main>
-        </PageTransition>
-    );
+        <LandingFooter />
+      </main>
+    </PageTransition>
+  );
 }
 
 export default LandingPage;

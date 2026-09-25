@@ -1,26 +1,54 @@
-
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 const API_MODE = import.meta.env.VITE_API_MODE || "mock";
 
-async function request(endpoint, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
 
-  if (!response.ok) {
+// ============================================================
+// GENERIC API REQUEST
+// ============================================================
+
+async function request(endpoint, options = {}) {
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+      ...options,
+    });
+
+    let data;
+
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Backend returned an invalid response.");
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data?.error ||
+          data?.message ||
+          `Server error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    console.error("TraceX API error:", error);
+
     throw new Error(
-      `Server error: ${response.status} ${response.statusText}`
+      error?.message ||
+        "Unable to connect to the TraceX backend."
     );
   }
-
-  return response.json();
 }
+
+
+// ============================================================
+// MOCK ANALYSIS
+// ============================================================
 
 function generateMockAnalysis(payload) {
   const wallet = payload.wallet;
@@ -57,10 +85,13 @@ function generateMockAnalysis(payload) {
 
   return {
     wallet,
+
     blockchain,
+
     transaction: payload.transaction || "Not provided",
 
     riskScore,
+
     riskLevel,
 
     status:
@@ -71,7 +102,9 @@ function generateMockAnalysis(payload) {
           : "No major risk indicators detected",
 
     transactions: transactionCount,
+
     volume: `${volumeValue} ${asset}`,
+
     hops,
 
     entity:
@@ -82,18 +115,33 @@ function generateMockAnalysis(payload) {
     indicators: [
       {
         title: "Transaction Pattern",
-        severity: riskLevel === "HIGH RISK" ? "high" : "medium",
+
+        severity:
+          riskLevel === "HIGH RISK"
+            ? "high"
+            : "medium",
+
         description:
           "The transaction pattern requires further investigation.",
       },
+
       {
         title: "Fund Movement",
+
         severity: "medium",
-        description: `${hops}-hop fund movement was detected.`,
+
+        description:
+          `${hops}-hop fund movement was detected.`,
       },
+
       {
         title: "Entity Association",
-        severity: riskLevel === "HIGH RISK" ? "high" : "medium",
+
+        severity:
+          riskLevel === "HIGH RISK"
+            ? "high"
+            : "medium",
+
         description:
           "Potential links to other blockchain entities were detected.",
       },
@@ -102,25 +150,40 @@ function generateMockAnalysis(payload) {
     transactionDetails: [
       {
         hash: `0xabc${walletSuffix}123`,
+
         from: wallet,
+
         to: `0x3B...${walletSuffix}1C`,
+
         amount: Number(
           (0.4 + (seed % 50) / 100).toFixed(2)
         ),
-        timestamp: "2026-09-19T10:30:00Z",
+
+        timestamp:
+          "2026-09-19T10:30:00Z",
+
         status:
           riskLevel === "HIGH RISK"
             ? "Suspicious"
             : "Review",
       },
+
       {
         hash: `0xdef${walletSuffix}456`,
-        from: `0x3B...${walletSuffix}1C`,
-        to: `0xA4...${walletSuffix}2D`,
+
+        from:
+          `0x3B...${walletSuffix}1C`,
+
+        to:
+          `0xA4...${walletSuffix}2D`,
+
         amount: Number(
           (0.3 + (seed % 40) / 100).toFixed(2)
         ),
-        timestamp: "2026-09-19T10:42:00Z",
+
+        timestamp:
+          "2026-09-19T10:42:00Z",
+
         status:
           riskLevel === "HIGH RISK"
             ? "Suspicious"
@@ -132,34 +195,60 @@ function generateMockAnalysis(payload) {
       nodes: [
         {
           id: "origin",
+
           type: "ORIGIN",
+
           label: "Investigated Wallet",
+
           address: wallet,
+
           entity: "Reported Wallet",
+
           status: "Reported",
         },
+
         {
           id: "hop1",
+
           type: "HOP",
+
           label: "Wallet 1",
-          address: `0x3B...${walletSuffix}1C`,
+
+          address:
+            `0x3B...${walletSuffix}1C`,
+
           entity: "Unknown Wallet",
+
           status: "Suspicious",
         },
+
         {
           id: "hop2",
+
           type: "HOP",
+
           label: "Wallet 2",
-          address: `0xA4...${walletSuffix}2D`,
+
+          address:
+            `0xA4...${walletSuffix}2D`,
+
           entity: "Unknown Wallet",
+
           status: "Suspicious",
         },
+
         {
           id: "destination",
+
           type: "DESTINATION",
+
           label: "Potential Exchange",
-          address: `0xEX...${walletSuffix}89`,
+
+          address:
+            `0xEX...${walletSuffix}89`,
+
           entity: "Crypto Exchange",
+
           status:
             riskLevel === "HIGH RISK"
               ? "High Risk"
@@ -170,66 +259,118 @@ function generateMockAnalysis(payload) {
       edges: [
         {
           from: "origin",
+
           to: "hop1",
+
           amount: Number(
             (0.6 + (seed % 30) / 100).toFixed(2)
           ),
+
           asset,
-          timestamp: "2026-09-19T10:30:00Z",
+
+          timestamp:
+            "2026-09-19T10:30:00Z",
         },
+
         {
           from: "hop1",
+
           to: "hop2",
+
           amount: Number(
             (0.5 + (seed % 25) / 100).toFixed(2)
           ),
+
           asset,
-          timestamp: "2026-09-19T10:42:00Z",
+
+          timestamp:
+            "2026-09-19T10:42:00Z",
         },
+
         {
           from: "hop2",
+
           to: "destination",
+
           amount: Number(
             (0.4 + (seed % 20) / 100).toFixed(2)
           ),
+
           asset,
-          timestamp: "2026-09-19T11:03:00Z",
+
+          timestamp:
+            "2026-09-19T11:03:00Z",
         },
       ],
     },
 
     entities: [
       {
-        name: "Potential Crypto Exchange",
+        name:
+          "Potential Crypto Exchange",
+
         type: "exchange",
+
         confidence:
-          riskLevel === "HIGH RISK" ? 0.82 : 0.58,
-        address: `0xEX...${walletSuffix}89`,
+          riskLevel === "HIGH RISK"
+            ? 0.82
+            : 0.58,
+
+        address:
+          `0xEX...${walletSuffix}89`,
       },
     ],
 
     riskBreakdown: [
       {
-        factor: "Transaction Behavior",
-        points: Math.min(30, riskScore),
+        factor:
+          "Transaction Behavior",
+
+        points:
+          Math.min(30, riskScore),
+
         description:
           "Transaction behavior was evaluated for unusual activity.",
       },
+
       {
-        factor: "Fund Movement",
-        points: Math.min(25, Math.max(0, riskScore - 5)),
+        factor:
+          "Fund Movement",
+
+        points:
+          Math.min(
+            25,
+            Math.max(0, riskScore - 5)
+          ),
+
         description:
           "The movement of funds across addresses was analyzed.",
       },
+
       {
-        factor: "Entity Association",
-        points: Math.min(20, Math.max(0, riskScore - 10)),
+        factor:
+          "Entity Association",
+
+        points:
+          Math.min(
+            20,
+            Math.max(0, riskScore - 10)
+          ),
+
         description:
           "Potential associations with known entity types were evaluated.",
       },
+
       {
-        factor: "Transfer Value",
-        points: Math.min(25, Math.max(0, riskScore - 15)),
+        factor:
+          "Transfer Value",
+
+        points:
+          Math.min(
+            25,
+            Math.max(0, riskScore - 15)
+          ),
+
         description:
           "Transfer values were evaluated against configured risk indicators.",
       },
@@ -237,21 +378,112 @@ function generateMockAnalysis(payload) {
   };
 }
 
+
+// ============================================================
+// WALLET ANALYSIS API
+// ============================================================
+
 export async function analyzeWalletAPI(payload) {
+  console.log(
+    "=========================================="
+  );
+
+  console.log(
+    "TraceX analysis request"
+  );
+
+  console.log(
+    "=========================================="
+  );
+
+  console.log(
+    "Wallet:",
+    payload?.wallet
+  );
+
+  console.log(
+    "Blockchain:",
+    payload?.blockchain
+  );
+
+  console.log(
+    "Transaction:",
+    payload?.transaction || "Not provided"
+  );
+
+  console.log(
+    "API mode:",
+    API_MODE
+  );
+
+  console.log(
+    "API base URL:",
+    API_BASE_URL
+  );
+
+  console.log(
+    "=========================================="
+  );
+
+
+  // ----------------------------------------------------------
   // MOCK MODE
+  // ----------------------------------------------------------
+
   if (API_MODE === "mock") {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log(
+      "Using MOCK analysis data..."
+    );
+
+    await new Promise(
+      (resolve) =>
+        setTimeout(resolve, 1500)
+    );
 
     return {
       success: true,
-      data: generateMockAnalysis(payload),
+
+      data:
+        generateMockAnalysis(payload),
     };
   }
 
+
+  // ----------------------------------------------------------
   // REAL BACKEND MODE
-  return request("/api/analyze", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+  // ----------------------------------------------------------
+
+  console.log(
+    "Using REAL TraceX backend..."
+  );
+
+  const result =
+    await request(
+      "/api/analyze",
+      {
+        method: "POST",
+
+        body:
+          JSON.stringify(payload),
+      }
+    );
+
+
+  console.log(
+    "TraceX backend response:",
+    result
+  );
+
+
+  return result;
+}
+
+
+// ============================================================
+// OPTIONAL HEALTH CHECK
+// ============================================================
+
+export async function checkBackendHealth() {
+  return request("/");
 }
 

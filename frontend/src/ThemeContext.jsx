@@ -5,7 +5,6 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("tracex-theme");
-
     return savedTheme || "light";
   });
 

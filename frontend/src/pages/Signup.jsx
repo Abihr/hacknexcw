@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import authVisual from "../assets/tracex_login-signup.png";
 import "./Auth.css";
+
+import { signup } from "../services/firebase/auth";
+import { getFirebaseErrorMessage } from "../services/firebase/firebaseErrors";
 
 function Signup() {
   const navigate = useNavigate();
@@ -9,42 +13,92 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSignup = (e) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Demo signup for hackathon
-    navigate("/investigate");
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await signup(name, email, password);
+
+      // Signup successful
+      navigate("/investigate");
+    } catch (error) {
+      console.error("SIGNUP ERROR:", error);
+      setError(getFirebaseErrorMessage(error));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="auth-page">
+
       {/* LEFT SIDE */}
       <div className="auth-visual">
-        <img src={authVisual} alt="TraceX Blockchain Intelligence" />
+        <img
+          src={authVisual}
+          alt="TraceX Blockchain Intelligence"
+        />
       </div>
 
       {/* RIGHT SIDE */}
       <div className="auth-form-container">
         <div className="auth-card">
+
           <h2>Create Account</h2>
 
           <p className="auth-subtitle">
             Create your TraceX investigation account.
           </p>
 
+          {error && (
+            <div className="auth-error">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSignup}>
+
             {/* NAME */}
             <div className="form-group">
               <label>Full Name</label>
 
-              <input type="text" placeholder="Enter your full name" required />
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </div>
 
             {/* EMAIL */}
             <div className="form-group">
               <label>Email</label>
 
-              <input type="email" placeholder="Enter your email" required />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             {/* PASSWORD */}
@@ -55,6 +109,9 @@ function Signup() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  minLength={6}
                   required
                 />
 
@@ -76,13 +133,18 @@ function Signup() {
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  minLength={6}
                   required
                 />
 
                 <button
                   type="button"
                   className="password-toggle"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  onClick={() =>
+                    setShowConfirmPassword(!showConfirmPassword)
+                  }
                 >
                   {showConfirmPassword ? "Hide" : "Show"}
                 </button>
@@ -92,29 +154,40 @@ function Signup() {
             {/* TERMS */}
             <label className="remember-me terms-check">
               <input type="checkbox" required />
-
               <span>I agree to the Terms & Conditions</span>
             </label>
 
             {/* SIGNUP BUTTON */}
-            <button type="submit" className="auth-submit">
-              Create Account
+            <button
+              type="submit"
+              className="auth-submit"
+              disabled={loading}
+            >
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
+
           </form>
 
           {/* LOGIN */}
           <div className="auth-switch">
             <span>Already have an account?</span>
 
-            <button onClick={() => navigate("/login")}>Sign in</button>
+            <button onClick={() => navigate("/login")}>
+              Sign in
+            </button>
           </div>
 
           {/* BACK */}
-          <button className="back-home" onClick={() => navigate("/")}>
+          <button
+            className="back-home"
+            onClick={() => navigate("/")}
+          >
             ← Back to TraceX
           </button>
+
         </div>
       </div>
+
     </div>
   );
 }

@@ -1,16 +1,49 @@
+
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
 import { useTheme } from "../../ThemeContext.jsx";
+import { auth } from "../../services/firebase/firebase";
+import { logout } from "../../services/firebase/auth";
+
 import "./Navbar.css";
 import logo from "../../assets/TraceX_logo.jpeg";
 
 function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+
+  // Firebase authentication state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Firebase user:", currentUser);
+      setUser(currentUser);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // Logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setShowProfile(false);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <header className="navbar">
       <div className="navbar-inner">
 
         {/* Logo */}
-        <a href="/" className="navbar-logo">
+        <Link to="/" className="navbar-logo">
           <span className="logo-mark">
             <img src={logo} alt="TraceX Logo" />
           </span>
@@ -18,17 +51,19 @@ function Navbar() {
           <span className="logo-text">
             TRACE<span>//</span>X
           </span>
-        </a>
+        </Link>
 
         {/* Navigation */}
         <nav className="navbar-links">
-          <a href="#overview">Overview</a>
-          <a href="#investigate">Investigate</a>
-          <a href="#dashboard">Dashboard</a>
+          <Link to="/#overview">Overview</Link>
+          <Link to="/#investigate">Investigate</Link>
+          <Link to="/#dashboard">Dashboard</Link>
         </nav>
 
         {/* Actions */}
         <div className="navbar-actions">
+
+          {/* Theme Toggle */}
           <button
             className="theme-toggle"
             onClick={toggleTheme}
@@ -37,8 +72,63 @@ function Navbar() {
           >
             {theme === "light" ? "☀️" : "🌙"}
           </button>
-        </div>
 
+          {/* Authentication / Profile */}
+          {user ? (
+            <div className="profile-container">
+
+              <button
+                className="profile-button"
+                type="button"
+                onClick={() => setShowProfile((prev) => !prev)}
+              >
+                <span className="profile-icon">
+                  👤
+                </span>
+
+                <span className="profile-name">
+                  {user.displayName ||
+                    user.email?.split("@")[0] ||
+                    "Profile"}
+                </span>
+              </button>
+
+              {/* Profile Dropdown */}
+              {showProfile && (
+                <div className="profile-dropdown">
+
+                  <div className="profile-info">
+                    <strong>
+                      {user.displayName ||
+                        user.email?.split("@")[0] ||
+                        "TraceX User"}
+                    </strong>
+
+                    <span>{user.email}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="logout-button"
+                  >
+                    Logout
+                  </button>
+
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              className="login-button"
+              type="button"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          )}
+
+        </div>
       </div>
     </header>
   );

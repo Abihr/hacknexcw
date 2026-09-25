@@ -1,60 +1,149 @@
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
 import { useTheme } from "../../ThemeContext.jsx";
+import { auth } from "../../services/firebase/firebase";
+import { logout } from "../../services/firebase/auth";
 
 function LandingNavbar() {
-    const navigate = useNavigate();
-    const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
-    return (
-        <header className="landing-navbar">
-            <div className="landing-logo">
-                Trace<span>X</span>
-            </div>
+  const [user, setUser] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
 
-            <nav className="landing-nav">
-                <a href="#how-it-works">How It Works</a>
-                <a href="#features">Features</a>
-                <a href="#faq">FAQ</a>
-            </nav>
+  // Firebase authentication state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("LandingNavbar user:", currentUser);
+      setUser(currentUser);
+      setShowProfile(false);
+    });
 
-            <div className="landing-auth-actions">
+    return unsubscribe;
+  }, []);
 
-                <button
-                    className="landing-login-button"
-                    onClick={() => navigate("/login")}
-                >
-                    Log in
-                </button>
+  // Logout
+  const handleLogout = async () => {
+    try {
+      await logout();
 
-                <button
-                    className="landing-signup-button"
-                    onClick={() => navigate("/signup")}
-                >
-                    Sign up
-                </button>
+      // Immediately clear local UI state
+      setUser(null);
+      setShowProfile(false);
 
-                <div className="landing-nav-actions">
+      // Go back to the landing/home page
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
-                    <button
-                        className="theme-toggle"
-                        onClick={toggleTheme}
-                        aria-label="Toggle theme"
-                    >
-                        {theme === "light" ? "☀️" : "🌙"}
-                    </button>
+  return (
+    <header className="landing-navbar">
+      {/* Logo */}
+      <div className="landing-logo">
+        Trace<span>X</span>
+      </div>
 
-                    <button
-                        className="landing-nav-button"
-                        onClick={() => navigate("/investigate")}
-                    >
-                        Investigate
-                    </button>
+      {/* Navigation */}
+      <nav className="landing-nav">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+      </nav>
 
+      {/* Actions */}
+      <div className="landing-auth-actions">
+
+        {/* Logged-out buttons */}
+        {!user && (
+          <>
+            <button
+              className="landing-login-button"
+              onClick={() => navigate("/login")}
+              type="button"
+            >
+              Log in
+            </button>
+
+            <button
+              className="landing-signup-button"
+              onClick={() => navigate("/signup")}
+              type="button"
+            >
+              Sign up
+            </button>
+          </>
+        )}
+
+        <div className="landing-nav-actions">
+
+          {/* Theme */}
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            type="button"
+          >
+            {theme === "light" ? "☀️" : "🌙"}
+          </button>
+
+          {/* Investigate */}
+          <button
+            className="landing-nav-button"
+            onClick={() => navigate("/investigate")}
+            type="button"
+          >
+            Investigate
+          </button>
+
+          {/* Logged-in profile */}
+          {user && (
+            <div className="profile-container">
+              <button
+                className="profile-button"
+                onClick={() => setShowProfile((prev) => !prev)}
+                type="button"
+              >
+                <span className="profile-icon">👤</span>
+
+                <span className="profile-name">
+                  {user.displayName ||
+                    user.email?.split("@")[0] ||
+                    "Profile"}
+                </span>
+              </button>
+
+              {showProfile && (
+                <div className="profile-dropdown">
+                  <div className="profile-info">
+                    <strong>
+                      {user.displayName || "TraceX User"}
+                    </strong>
+
+                    <span>{user.email}</span>
+                  </div>
+
+                  <button
+                    className="logout-button"
+                    onClick={handleLogout}
+                    type="button"
+                  >
+                    Logout
+                  </button>
                 </div>
-
+              )}
             </div>
-        </header>
-    );
+          )}
+
+        </div>
+      </div>
+    </header>
+  );
 }
 
 export default LandingNavbar;
+

@@ -67,7 +67,7 @@ function LandingHero() {
 
                             <video
                                 className="hero-video"
-                                src="/TraceX/videos/tracex-intro.mp4"
+                                src="/videos/tracex-intro.mp4"
                                 autoPlay
                                 muted
                                 loop

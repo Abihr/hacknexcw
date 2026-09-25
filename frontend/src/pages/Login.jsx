@@ -1,88 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import logo from "../assets/TraceX_logo.jpeg";
+import authVisual from "../assets/tracex_login-signup.png";
 import "./Auth.css";
-
-import { login } from "../services/firebase/auth";
-import { getFirebaseErrorMessage } from "../services/firebase/firebaseErrors";
 
 function Login() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    setError("");
-    setLoading(true);
-
-    try {
-      await login(email, password);
-
-      navigate("/investigate");
-    } catch (error) {
-      setError(getFirebaseErrorMessage(error));
-    } finally {
-      setLoading(false);
-    }
+    // Demo login for hackathon
+    navigate("/investigate");
   };
 
   return (
     <div className="auth-page">
-
       {/* LEFT SIDE */}
-      <div className="auth-brand">
-        <img
-          src={logo}
-          alt="TraceX Logo"
-          className="auth-logo"
-        />
-
-        <h1>TraceX</h1>
-
-        <p>Blockchain Intelligence Platform</p>
-
-        <span>Investigate. Trace. Identify.</span>
+      <div className="auth-visual">
+        <img src={authVisual} alt="TraceX Blockchain Intelligence" />
       </div>
 
       {/* RIGHT SIDE */}
       <div className="auth-form-container">
         <div className="auth-card">
-
           <h2>Welcome Back</h2>
 
           <p className="auth-subtitle">
             Sign in to continue your investigation.
           </p>
 
-          {/* ERROR MESSAGE */}
-          {error && (
-            <div className="auth-error">
-              {error}
-            </div>
-          )}
-
           <form onSubmit={handleLogin}>
-
             {/* EMAIL */}
             <div className="form-group">
               <label>Email</label>
 
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <input type="email" placeholder="Enter your email" required />
             </div>
 
             {/* PASSWORD */}
@@ -93,8 +47,6 @@ function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
 
@@ -110,52 +62,36 @@ function Login() {
 
             {/* OPTIONS */}
             <div className="auth-options">
-
               <label className="remember-me">
                 <input type="checkbox" />
+
                 <span>Remember me</span>
               </label>
 
-              <button
-                type="button"
-                className="forgot-password"
-              >
+              <button type="button" className="forgot-password">
                 Forgot password?
               </button>
-
             </div>
 
             {/* LOGIN BUTTON */}
-            <button
-              type="submit"
-              className="auth-submit"
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Sign In"}
+            <button type="submit" className="auth-submit">
+              Sign In
             </button>
-
           </form>
 
           {/* SIGNUP */}
           <div className="auth-switch">
             <span>Don't have an account?</span>
 
-            <button onClick={() => navigate("/signup")}>
-              Create account
-            </button>
+            <button onClick={() => navigate("/signup")}>Create account</button>
           </div>
 
           {/* BACK */}
-          <button
-            className="back-home"
-            onClick={() => navigate("/")}
-          >
+          <button className="back-home" onClick={() => navigate("/")}>
             ← Back to TraceX
           </button>
-
         </div>
       </div>
-
     </div>
   );
 }

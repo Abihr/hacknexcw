@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",
+<<<<<<< HEAD
     "firebase": "^12.19.0",
+=======
+>>>>>>> origin/main
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4"

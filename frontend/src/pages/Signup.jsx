@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/TraceX_logo.jpeg";
+import authVisual from "../assets/tracex_login-signup.png";
 import "./Auth.css";
 
 function Signup() {
@@ -19,14 +19,8 @@ function Signup() {
   return (
     <div className="auth-page">
       {/* LEFT SIDE */}
-      <div className="auth-brand">
-        <img src={logo} alt="TraceX Logo" className="auth-logo" />
-
-        <h1>TraceX</h1>
-
-        <p>Blockchain Intelligence Platform</p>
-
-        <span>Investigate. Trace. Identify.</span>
+      <div className="auth-visual">
+        <img src={authVisual} alt="TraceX Blockchain Intelligence" />
       </div>
 
       {/* RIGHT SIDE */}

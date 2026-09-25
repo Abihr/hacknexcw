@@ -20,8 +20,18 @@ function Navbar() {
   // Firebase authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("Firebase user:", currentUser);
+      console.log(
+        "🔥 NAVBAR AUTH STATE:",
+        currentUser ? "LOGGED IN" : "LOGGED OUT"
+      );
+
+      console.log(
+        "🔥 CURRENT UID:",
+        currentUser?.uid || "NONE"
+      );
+
       setUser(currentUser);
+      setShowProfile(false);
     });
 
     return unsubscribe;
@@ -29,12 +39,23 @@ function Navbar() {
 
   // Logout
   const handleLogout = async () => {
+    console.log("🔥 LOGOUT CLICKED");
+
     try {
       await logout();
+
+      console.log(
+        "🔥 AFTER SIGNOUT:",
+        auth.currentUser ? auth.currentUser.uid : "NULL"
+      );
+
+      setUser(null);
       setShowProfile(false);
-      navigate("/login");
+
+      // Go to the default landing page
+      window.location.replace("/");
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error("🔥 LOGOUT ERROR:", error);
     }
   };
 
@@ -80,11 +101,11 @@ function Navbar() {
               <button
                 className="profile-button"
                 type="button"
-                onClick={() => setShowProfile((prev) => !prev)}
+                onClick={() =>
+                  setShowProfile((prev) => !prev)
+                }
               >
-                <span className="profile-icon">
-                  👤
-                </span>
+                <span className="profile-icon">👤</span>
 
                 <span className="profile-name">
                   {user.displayName ||
@@ -117,6 +138,7 @@ function Navbar() {
 
                 </div>
               )}
+
             </div>
           ) : (
             <button
@@ -135,3 +157,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

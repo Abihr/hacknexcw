@@ -7,7 +7,6 @@ import FAQ from "../components/Landing/FAQ.jsx";
 import LandingCTA from "../components/Landing/LandingCTA.jsx";
 import PageTransition from "../PageTransition.jsx";
 import ScrollReveal from "../ScrollReveal.jsx";
-
 function LandingPage() {
     return (
         <PageTransition>

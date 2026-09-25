@@ -17,7 +17,11 @@ function LandingNavbar() {
   // Firebase authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("LandingNavbar user:", currentUser);
+      console.log(
+        "🔥 LANDING NAVBAR AUTH:",
+        currentUser ? "LOGGED IN" : "LOGGED OUT"
+      );
+
       setUser(currentUser);
       setShowProfile(false);
     });
@@ -27,118 +31,134 @@ function LandingNavbar() {
 
   // Logout
   const handleLogout = async () => {
-    try {
-      await logout();
+  console.log("🔥 LOGOUT CLICKED");
 
-      // Immediately clear local UI state
-      setUser(null);
-      setShowProfile(false);
+  try {
+    await logout();
 
-      // Go back to the landing/home page
-      navigate("/", { replace: true });
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
+    console.log(
+      "🔥 AFTER SIGNOUT:",
+      auth.currentUser ? auth.currentUser.uid : "NULL"
+    );
 
+    setUser(null);
+    setShowProfile(false);
+
+    // Go to the default landing page
+    navigate("/", { replace: true });
+  } catch (error) {
+    console.error("🔥 LOGOUT ERROR:", error);
+  }
+};
   return (
     <header className="landing-navbar">
-      {/* Logo */}
-      <div className="landing-logo">
-        Trace<span>X</span>
-      </div>
+      <div className="landing-navbar-inner">
 
-      {/* Navigation */}
-      <nav className="landing-nav">
-        <a href="#how-it-works">How It Works</a>
-        <a href="#features">Features</a>
-        <a href="#faq">FAQ</a>
-      </nav>
+        {/* Logo */}
+        <button
+          className="landing-logo"
+          onClick={() => navigate("/")}
+          type="button"
+        >
+          Trace<span>X</span>
+        </button>
 
-      {/* Actions */}
-      <div className="landing-auth-actions">
+        {/* Navigation */}
+        <nav className="landing-nav">
+          <a href="#how-it-works">How It Works</a>
+          <a href="#features">Features</a>
+          <a href="#faq">FAQ</a>
+        </nav>
 
-        {/* Logged-out buttons */}
-        {!user && (
-          <>
-            <button
-              className="landing-login-button"
-              onClick={() => navigate("/login")}
-              type="button"
-            >
-              Log in
-            </button>
+        {/* Authentication */}
+        <div className="landing-auth-actions">
 
-            <button
-              className="landing-signup-button"
-              onClick={() => navigate("/signup")}
-              type="button"
-            >
-              Sign up
-            </button>
-          </>
-        )}
-
-        <div className="landing-nav-actions">
-
-          {/* Theme */}
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            type="button"
-          >
-            {theme === "light" ? "☀️" : "🌙"}
-          </button>
-
-          {/* Investigate */}
-          <button
-            className="landing-nav-button"
-            onClick={() => navigate("/investigate")}
-            type="button"
-          >
-            Investigate
-          </button>
-
-          {/* Logged-in profile */}
-          {user && (
-            <div className="profile-container">
+          {!user && (
+            <>
               <button
-                className="profile-button"
-                onClick={() => setShowProfile((prev) => !prev)}
+                className="landing-login-button"
+                onClick={() => navigate("/login")}
                 type="button"
               >
-                <span className="profile-icon">👤</span>
-
-                <span className="profile-name">
-                  {user.displayName ||
-                    user.email?.split("@")[0] ||
-                    "Profile"}
-                </span>
+                Log in
               </button>
 
-              {showProfile && (
-                <div className="profile-dropdown">
-                  <div className="profile-info">
-                    <strong>
-                      {user.displayName || "TraceX User"}
-                    </strong>
-
-                    <span>{user.email}</span>
-                  </div>
-
-                  <button
-                    className="logout-button"
-                    onClick={handleLogout}
-                    type="button"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+              <button
+                className="landing-signup-button"
+                onClick={() => navigate("/signup")}
+                type="button"
+              >
+                Sign up
+              </button>
+            </>
           )}
 
+          {/* Right-side actions */}
+          <div className="landing-nav-actions">
+
+            {/* Theme */}
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              type="button"
+            >
+              {theme === "light" ? "☀️" : "🌙"}
+            </button>
+
+            {/* Investigate */}
+            <button
+              className="landing-nav-button"
+              onClick={() => navigate("/investigate")}
+              type="button"
+            >
+              Investigate
+            </button>
+
+            {/* Profile */}
+            {user && (
+              <div className="profile-container">
+
+                <button
+                  className="profile-button"
+                  onClick={() => setShowProfile((prev) => !prev)}
+                  type="button"
+                >
+                  <span className="profile-icon">👤</span>
+
+                  <span className="profile-name">
+                    {user.displayName ||
+                      user.email?.split("@")[0] ||
+                      "Profile"}
+                  </span>
+                </button>
+
+                {showProfile && (
+                  <div className="profile-dropdown">
+
+                    <div className="profile-info">
+                      <strong>
+                        {user.displayName || "TraceX User"}
+                      </strong>
+
+                      <span>{user.email}</span>
+                    </div>
+
+                    <button
+                      className="logout-button"
+                      onClick={handleLogout}
+                      type="button"
+                    >
+                      Logout
+                    </button>
+
+                  </div>
+                )}
+
+              </div>
+            )}
+
+          </div>
         </div>
       </div>
     </header>
@@ -146,4 +166,3 @@ function LandingNavbar() {
 }
 
 export default LandingNavbar;
-

@@ -3,10 +3,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
     const savedTheme = localStorage.getItem("tracex-theme");
-    return savedTheme || "light";
-  });
+
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);

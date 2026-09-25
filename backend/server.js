@@ -6,6 +6,10 @@ const {
   getEVMAnalysisData,
 } = require("./services/evm/evmAnalyzer");
 
+const {
+    getSolanaAnalysisData,
+} = require("./services/solana/solanaAnalyzer");
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -2434,20 +2438,32 @@ app.post(
       // ======================================================
       // SOLANA
       // ======================================================
+if (blockchainKey === "solana") {
+    try {
+        const solanaData =
+            await getSolanaAnalysisData(
+                wallet,
+                blockchainKey
+            );
 
-      if (
-        blockchainKey ===
-        "solana"
-      ) {
-        return res.status(400).json({
-          success: false,
-
-          error:
-            "Solana analysis is not implemented yet.",
+        return res.json({
+            success: true,
+            data: solanaData,
         });
-      }
+    } catch (error) {
+        console.error(
+            "Solana analysis failed:",
+            error
+        );
 
-
+        return res.status(500).json({
+            success: false,
+            error:
+                error.message ||
+                "Solana analysis failed.",
+        });
+    }
+}
 
       // ======================================================
       // UNSUPPORTED BLOCKCHAIN

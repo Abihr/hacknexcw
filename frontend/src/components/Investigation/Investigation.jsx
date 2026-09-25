@@ -1,6 +1,9 @@
 import { useState } from "react";
+
 import { useInvestigation } from "../../InvestigationContext.jsx";
+
 import "./Investigation.css";
+
 import { analyzeWallet } from "../../services/analysisService.js";
 
 function Investigation() {
@@ -32,14 +35,13 @@ function Investigation() {
             return;
         }
 
-        // ----------------------------------------------------
-        // EVM WALLET VALIDATION
-        // ----------------------------------------------------
-
         if (
-            ["Ethereum", "BNB Chain", "Polygon", "Base Sepolia"].includes(
-                blockchain
-            ) &&
+            [
+                "Ethereum",
+                "BNB Chain",
+                "Polygon",
+                "Base Sepolia",
+            ].includes(blockchain) &&
             !/^0x[a-fA-F0-9]{40}$/.test(trimmedWallet)
         ) {
             setError(
@@ -48,15 +50,23 @@ function Investigation() {
             return;
         }
 
-        // ----------------------------------------------------
-        // BITCOIN WALLET VALIDATION
-        // ----------------------------------------------------
-
         if (
             blockchain === "Bitcoin" &&
-            !/^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{20,87}$/.test(trimmedWallet)
+            !/^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{20,87}$/.test(
+                trimmedWallet
+            )
         ) {
             setError("Invalid Bitcoin wallet address.");
+            return;
+        }
+
+        if (
+            blockchain === "Solana" &&
+            !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(
+                trimmedWallet
+            )
+        ) {
+            setError("Invalid Solana wallet address.");
             return;
         }
 
@@ -72,36 +82,42 @@ function Investigation() {
         }, 350);
 
         try {
-            // ------------------------------------------------
-            // MAP FRONTEND BLOCKCHAIN NAME TO BACKEND VALUE
-            // ------------------------------------------------
-
             const blockchainMap = {
                 Bitcoin: "bitcoin",
                 Ethereum: "ethereum",
                 "BNB Chain": "bnb",
                 Polygon: "polygon",
                 "Base Sepolia": "base-sepolia",
+                Solana: "solana",
             };
 
             const backendBlockchain =
-                blockchainMap[blockchain] || blockchain.toLowerCase();
+                blockchainMap[blockchain] ||
+                blockchain.toLowerCase();
 
-            console.log("==========================================");
+            console.log(
+                "=========================================="
+            );
             console.log("TRACE X FRONTEND ANALYSIS");
-            console.log("==========================================");
+            console.log(
+                "=========================================="
+            );
             console.log("Wallet:", trimmedWallet);
-            console.log("Frontend blockchain:", blockchain);
-            console.log("Backend blockchain:", backendBlockchain);
+            console.log(
+                "Frontend blockchain:",
+                blockchain
+            );
+            console.log(
+                "Backend blockchain:",
+                backendBlockchain
+            );
             console.log(
                 "Transaction:",
                 transaction.trim() || "Not provided"
             );
-            console.log("==========================================");
-
-            // ------------------------------------------------
-            // CALL ANALYSIS SERVICE
-            // ------------------------------------------------
+            console.log(
+                "=========================================="
+            );
 
             const analysisData = await analyzeWallet({
                 wallet: trimmedWallet,
@@ -109,12 +125,73 @@ function Investigation() {
                 transaction: transaction.trim(),
             });
 
-            console.log("TraceX analysis response:", analysisData);
+            console.log(
+                "TraceX analysis response:",
+                analysisData
+            );
+
+            const transactionCount = Array.isArray(
+                analysisData?.transactions
+            )
+                ? analysisData.transactions.length
+                : Number(
+                      analysisData?.fetchedTransactions ??
+                          analysisData?.transactionCount ??
+                          analysisData?.transactions ??
+                          0
+                  );
+
+            const fundFlowHops = Array.isArray(
+                analysisData?.fundFlow
+            )
+                ? analysisData.fundFlow.length
+                : analysisData?.fundFlow &&
+                  typeof analysisData.fundFlow === "object"
+                ? Array.isArray(
+                      analysisData.fundFlow.edges
+                  )
+                    ? analysisData.fundFlow.edges.length
+                    : 0
+                : Number(analysisData?.hops ?? 0);
+
+            const riskIndicators = Array.isArray(
+                analysisData?.indicators
+            )
+                ? analysisData.indicators
+                : Array.isArray(
+                      analysisData?.riskFactors
+                  )
+                ? analysisData.riskFactors.map(
+                      (factor) => ({
+                          description:
+                              typeof factor ===
+                              "string"
+                                  ? factor
+                                  : factor?.description ||
+                                    factor?.title ||
+                                    "Risk factor detected.",
+                      })
+                  )
+                : [];
+
+            const safeAnalysisData = {
+                ...analysisData,
+                transactions: transactionCount,
+                transactionCount: transactionCount,
+                fetchedTransactions:
+                    analysisData?.fetchedTransactions ??
+                    transactionCount,
+                hops: fundFlowHops,
+                indicators: riskIndicators,
+            };
 
             setResult(analysisData);
-            setAnalysis(analysisData);
+            setAnalysis(safeAnalysisData);
         } catch (err) {
-            console.error("TraceX frontend analysis error:", err);
+            console.error(
+                "TraceX frontend analysis error:",
+                err
+            );
 
             setError(
                 err.message ||
@@ -126,14 +203,77 @@ function Investigation() {
         }
     };
 
+    const transactionCount = Array.isArray(
+        result?.transactions
+    )
+        ? result.transactions.length
+        : Number(
+              result?.fetchedTransactions ??
+                  result?.transactionCount ??
+                  result?.transactions ??
+                  0
+          );
+
+    const transferVolume =
+        result?.volume ??
+        result?.totalVolume ??
+        (
+            result?.totalSent !== undefined ||
+            result?.totalReceived !== undefined
+                ? `${Number(
+                      result?.totalSent || 0
+                  ).toFixed(4)} / ${Number(
+                      result?.totalReceived || 0
+                  ).toFixed(4)}`
+                : "0"
+        );
+
+    const fundFlowHops =
+        result?.hops ??
+        (
+            Array.isArray(result?.fundFlow)
+                ? result.fundFlow.length
+                : result?.fundFlow &&
+                  typeof result.fundFlow === "object"
+                ? Array.isArray(
+                      result.fundFlow.edges
+                  )
+                    ? result.fundFlow.edges.length
+                    : 0
+                : 0
+        );
+
+    const riskIndicators = Array.isArray(
+        result?.indicators
+    )
+        ? result.indicators
+        : Array.isArray(result?.riskFactors)
+        ? result.riskFactors.map((factor) => ({
+              description:
+                  typeof factor === "string"
+                      ? factor
+                      : factor?.description ||
+                        factor?.title ||
+                        "Risk factor detected.",
+          }))
+        : [];
+
+    const transactionHash =
+        typeof result?.transaction === "string"
+            ? result.transaction
+            : Array.isArray(result?.transactions) &&
+              result.transactions.length > 0
+            ? result.transactions[0]?.txid ||
+              result.transactions[0]?.hash ||
+              null
+            : null;
+
     return (
-        <section className="investigation" id="investigate">
+        <section
+            className="investigation"
+            id="investigate"
+        >
             <div className="investigation-container">
-
-                {/* ==================================================
-                    HEADING
-                ================================================== */}
-
                 <div className="investigation-heading">
                     <span className="section-label">
                         INVESTIGATION
@@ -145,20 +285,13 @@ function Investigation() {
                     </h2>
 
                     <p>
-                        Enter a wallet address and investigate its
-                        transaction activity across the blockchain.
+                        Enter a wallet address and investigate
+                        its transaction activity across the
+                        blockchain.
                     </p>
                 </div>
 
-
-                {/* ==================================================
-                    INVESTIGATION FORM
-                ================================================== */}
-
                 <div className="investigation-card">
-
-                    {/* WALLET */}
-
                     <div className="form-group">
                         <label htmlFor="wallet">
                             Suspect Wallet Address
@@ -174,9 +307,6 @@ function Investigation() {
                             }
                         />
                     </div>
-
-
-                    {/* BLOCKCHAIN */}
 
                     <div className="form-group">
                         <label htmlFor="blockchain">
@@ -209,11 +339,12 @@ function Investigation() {
                             <option value="Base Sepolia">
                                 Base Sepolia
                             </option>
+
+                            <option value="Solana">
+                                Solana
+                            </option>
                         </select>
                     </div>
-
-
-                    {/* TRANSACTION */}
 
                     <div className="form-group">
                         <label htmlFor="transaction">
@@ -227,13 +358,12 @@ function Investigation() {
                             placeholder="Enter transaction hash..."
                             value={transaction}
                             onChange={(e) =>
-                                setTransaction(e.target.value)
+                                setTransaction(
+                                    e.target.value
+                                )
                             }
                         />
                     </div>
-
-
-                    {/* ANALYZE BUTTON */}
 
                     <button
                         className="investigate-button"
@@ -249,16 +379,9 @@ function Investigation() {
                         </span>
                     </button>
 
-
-                    {/* ==================================================
-                        LOADING
-                    ================================================== */}
-
                     {loading && (
                         <div className="investigation-loading">
-
                             <div className="loading-header">
-
                                 <span className="loading-pulse"></span>
 
                                 <div>
@@ -274,40 +397,40 @@ function Investigation() {
                                         }
                                     </p>
                                 </div>
-
                             </div>
 
-
                             <div className="loading-progress">
-
                                 <div
                                     className="loading-progress-fill"
                                     style={{
                                         width: `${
-                                            ((loadingStep + 1) /
+                                            ((loadingStep +
+                                                1) /
                                                 loadingMessages.length) *
                                             100
                                         }%`,
                                     }}
                                 ></div>
-
                             </div>
 
-
                             <div className="loading-steps">
-
                                 {loadingMessages.map(
-                                    (message, index) => (
+                                    (
+                                        message,
+                                        index
+                                    ) => (
                                         <div
                                             key={message}
                                             className={
-                                                index <= loadingStep
+                                                index <=
+                                                loadingStep
                                                     ? "loading-step active"
                                                     : "loading-step"
                                             }
                                         >
                                             <span>
-                                                {index <= loadingStep
+                                                {index <=
+                                                loadingStep
                                                     ? "✓"
                                                     : "○"}
                                             </span>
@@ -316,43 +439,22 @@ function Investigation() {
                                         </div>
                                     )
                                 )}
-
                             </div>
-
                         </div>
                     )}
-
-
-                    {/* ==================================================
-                        ERROR
-                    ================================================== */}
 
                     {error && (
                         <div className="investigation-error">
-
                             <span>⚠</span>
-
                             {error}
-
                         </div>
                     )}
-
                 </div>
-
-
-                {/* ==================================================
-                    ANALYSIS RESULT
-                ================================================== */}
 
                 {result && (
                     <div className="investigation-result">
-
-                        {/* RESULT HEADER */}
-
                         <div className="result-header">
-
                             <div>
-
                                 <span className="section-label">
                                     ANALYSIS RESULT
                                 </span>
@@ -360,24 +462,15 @@ function Investigation() {
                                 <h3>
                                     Wallet Analysis Complete
                                 </h3>
-
                             </div>
 
                             <span className="analysis-status">
                                 ● ANALYZED
                             </span>
-
                         </div>
 
-
-                        {/* ==================================================
-                            RISK SCORE
-                        ================================================== */}
-
                         <div className="risk-score-section">
-
                             <div className="risk-score-info">
-
                                 <span>
                                     RISK SCORE
                                 </span>
@@ -389,22 +482,15 @@ function Investigation() {
                                         /100
                                     </small>
                                 </strong>
-
                             </div>
-
 
                             <div className="risk-level">
                                 {result.riskLevel ||
                                     "UNKNOWN"}
                             </div>
-
                         </div>
 
-
-                        {/* RISK BAR */}
-
                         <div className="risk-bar">
-
                             <div
                                 className="risk-bar-fill"
                                 style={{
@@ -413,22 +499,16 @@ function Investigation() {
                                         Math.max(
                                             0,
                                             Number(
-                                                result.riskScore || 0
+                                                result.riskScore ||
+                                                    0
                                             )
                                         )
                                     )}%`,
                                 }}
                             ></div>
-
                         </div>
 
-
-                        {/* ==================================================
-                            WALLET INFORMATION
-                        ================================================== */}
-
                         <div className="result-wallet">
-
                             <span>
                                 ANALYZED WALLET
                             </span>
@@ -438,99 +518,68 @@ function Investigation() {
                             </strong>
 
                             <p>
-                                {result.blockchain}
-                                {" "}
-                                Network
+                                {result.blockchain} Network
                             </p>
-
                         </div>
 
-
-                        {/* ==================================================
-                            STATISTICS
-                        ================================================== */}
-
                         <div className="result-stats">
-
                             <div className="result-stat">
-
                                 <span>
                                     TRANSACTIONS
                                 </span>
 
                                 <strong>
-                                    {result.transactions ??
-                                        result.fetchedTransactions ??
-                                        0}
+                                    {transactionCount}
                                 </strong>
-
                             </div>
 
-
                             <div className="result-stat">
-
                                 <span>
                                     TRANSFER VOLUME
                                 </span>
 
                                 <strong>
-                                    {result.volume ||
-                                        "0"}
+                                    {transferVolume}
                                 </strong>
-
                             </div>
 
-
                             <div className="result-stat">
-
                                 <span>
                                     FUND FLOW HOPS
                                 </span>
 
                                 <strong>
-                                    {result.hops ?? 0}
+                                    {fundFlowHops}
                                 </strong>
-
                             </div>
-
                         </div>
 
-
-                        {/* ==================================================
-                            ENTITY
-                        ================================================== */}
-
                         <div className="entity-section">
-
                             <span>
                                 POTENTIAL ENTITY
                             </span>
 
                             <strong>
-                                {result.entity ||
-                                    "Unknown"}
+                                {typeof result.entity ===
+                                "string"
+                                    ? result.entity
+                                    : "Unknown"}
                             </strong>
-
                         </div>
 
-
-                        {/* ==================================================
-                            RISK INDICATORS
-                        ================================================== */}
-
                         <div className="indicators-section">
-
                             <span>
                                 RISK INDICATORS
                             </span>
 
                             <div className="indicator-list">
-
-                                {Array.isArray(
-                                    result.indicators
-                                ) &&
-                                    result.indicators.map(
-                                        (indicator, index) => (
+                                {riskIndicators.length >
+                                0 ? (
+                                    riskIndicators.map(
+                                        (
+                                            indicator,
+                                            index
+                                        ) => (
                                             <div
                                                 className="indicator"
                                                 key={index}
@@ -540,53 +589,45 @@ function Investigation() {
                                                 </span>
 
                                                 <p>
-                                                    {indicator.description ||
-                                                        indicator.title ||
-                                                        "Risk indicator detected."}
+                                                    {typeof indicator ===
+                                                    "string"
+                                                        ? indicator
+                                                        : indicator?.description ||
+                                                          indicator?.title ||
+                                                          "Risk indicator detected."}
                                                 </p>
                                             </div>
                                         )
-                                    )}
-
-                                {(!result.indicators ||
-                                    result.indicators.length ===
-                                        0) && (
+                                    )
+                                ) : (
                                     <div className="indicator">
                                         <span>✓</span>
 
                                         <p>
-                                            No additional risk indicators were reported.
+                                            No additional
+                                            risk indicators
+                                            were reported.
                                         </p>
                                     </div>
                                 )}
-
                             </div>
-
                         </div>
 
-
-                        {/* ==================================================
-                            TRANSACTION REFERENCE
-                        ================================================== */}
-
                         <div className="transaction-reference">
-
                             <span>
                                 TRANSACTION HASH
                             </span>
 
                             <strong>
-                                {result.transaction ||
+                                {transactionHash ||
                                     "Not provided"}
                             </strong>
-
                         </div>
-
                     </div>
                 )}
-
             </div>
         </section>
     );
 }
+
 export default Investigation;

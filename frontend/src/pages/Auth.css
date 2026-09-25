@@ -1,0 +1,402 @@
+/* ============================= */
+/* TRACEX AUTH PAGES */
+/* ============================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--bg-color, #0a0f1c);
+  color: var(--text-color, #ffffff);
+}
+
+/* ============================= */
+/* LEFT BRANDING */
+/* ============================= */
+
+.auth-brand {
+  width: 45%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  background:
+    radial-gradient(circle at center, rgba(0, 140, 255, 0.18), transparent 60%),
+    #080d18;
+}
+
+.auth-logo {
+  width: 90px;
+  height: 90px;
+
+  object-fit: cover;
+
+  border-radius: 22px;
+
+  margin-bottom: 20px;
+
+  box-shadow: 0 0 30px rgba(0, 140, 255, 0.25);
+}
+
+.auth-brand h1 {
+  margin: 0;
+
+  font-size: 42px;
+  font-weight: 700;
+
+  letter-spacing: -1px;
+}
+
+.auth-brand p {
+  margin: 10px 0 5px;
+
+  font-size: 16px;
+
+  opacity: 0.75;
+}
+
+.auth-brand span {
+  font-size: 13px;
+
+  opacity: 0.5;
+
+  letter-spacing: 1px;
+}
+
+/* ============================= */
+/* RIGHT SIDE */
+/* ============================= */
+
+.auth-form-container {
+  width: 55%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px;
+}
+
+/* ============================= */
+/* AUTH CARD */
+/* ============================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+
+  padding: 42px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+
+  backdrop-filter: blur(20px);
+}
+
+.auth-card h2 {
+  margin: 0 0 8px;
+
+  font-size: 30px;
+}
+
+.auth-subtitle {
+  margin: 0 0 30px;
+
+  font-size: 14px;
+
+  opacity: 0.6;
+}
+
+/* ============================= */
+/* FORM */
+/* ============================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  opacity: 0.85;
+}
+
+.form-group input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: white;
+
+  font-size: 14px;
+
+  transition: 0.2s;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-group input:focus {
+  border-color: #168cff;
+
+  box-shadow: 0 0 0 3px rgba(22, 140, 255, 0.12);
+}
+
+/* ============================= */
+/* PASSWORD */
+/* ============================= */
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 65px;
+}
+
+.password-toggle {
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: none;
+
+  color: #168cff;
+
+  cursor: pointer;
+
+  font-size: 12px;
+}
+
+/* ============================= */
+/* OPTIONS */
+/* ============================= */
+
+.auth-options {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin: 5px 0 22px;
+
+  font-size: 12px;
+}
+
+.remember-me {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 12px;
+
+  opacity: 0.75;
+
+  cursor: pointer;
+}
+
+.remember-me input {
+  accent-color: #168cff;
+}
+
+.forgot-password {
+  border: none;
+
+  background: none;
+
+  color: #168cff;
+
+  cursor: pointer;
+
+  font-size: 12px;
+}
+
+/* ============================= */
+/* SUBMIT BUTTON */
+/* ============================= */
+
+.auth-submit {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #168cff;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+}
+
+.auth-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 25px rgba(22, 140, 255, 0.25);
+}
+
+/* ============================= */
+/* SWITCH LOGIN / SIGNUP */
+/* ============================= */
+
+.auth-switch {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 25px;
+
+  font-size: 13px;
+
+  opacity: 0.7;
+}
+
+.auth-switch button {
+  border: none;
+
+  background: none;
+
+  color: #168cff;
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+/* ============================= */
+/* TERMS */
+/* ============================= */
+
+.terms-check {
+  margin: 15px 0 22px;
+}
+
+/* ============================= */
+/* BACK HOME */
+/* ============================= */
+
+.back-home {
+  display: block;
+
+  margin: 22px auto 0;
+
+  border: none;
+
+  background: none;
+
+  color: inherit;
+
+  opacity: 0.5;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  transition: 0.2s;
+}
+
+.back-home:hover {
+  opacity: 1;
+
+  color: #168cff;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 800px) {
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-brand {
+    width: 100%;
+    min-height: auto;
+
+    padding: 35px 20px;
+  }
+
+  .auth-brand h1 {
+    font-size: 32px;
+  }
+
+  .auth-logo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .auth-form-container {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 25px 20px;
+  }
+
+  .auth-card {
+    padding: 30px 24px;
+  }
+}
+.auth-error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  font-size: 14px;
+}
+
+.auth-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

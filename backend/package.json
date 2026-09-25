@@ -12,8 +12,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@solana/web3.js": "^1.99.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "viem": "^2.56.9"
   }
 }

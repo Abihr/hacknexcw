@@ -7,11 +7,7 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  background: color-mix(
-    in srgb,
-    var(--bg-secondary) 88%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -124,12 +120,33 @@
     color 0.2s ease;
 }
 
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  color: currentColor;
+  stroke: currentColor;
+  fill: none;
+  opacity: 1;
+  visibility: visible;
+}
+
 .theme-toggle:hover {
   transform: translateY(-2px);
   border-color: var(--brand-primary);
   color: var(--brand-primary);
 }
 
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  color: currentColor;
+  stroke: currentColor;
+  fill: none;
+  opacity: 1;
+  visibility: visible;
+}
 /* ========================================
    PROFILE
    ======================================== */

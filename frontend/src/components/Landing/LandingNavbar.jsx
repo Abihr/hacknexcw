@@ -93,7 +93,7 @@ function LandingNavbar() {
           {/* Right-side actions */}
           <div className="landing-nav-actions">
             {/* Theme */}
-            ```jsx
+            
             <button
               className="theme-toggle"
               onClick={toggleTheme}
@@ -141,7 +141,7 @@ function LandingNavbar() {
                 </svg>
               )}
             </button>
-            ```
+            
             {/* Investigate */}
             {/* <button
               className="landing-nav-button"

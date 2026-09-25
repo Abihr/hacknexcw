@@ -1,0 +1,351 @@
+/* =========================================
+   TRACEX FOOTER
+========================================= */
+
+.tracex-footer {
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+  color: #cbd5e1;
+  padding: 70px 0 30px;
+}
+
+.tracex-footer-container {
+  position: relative;
+  z-index: 2;
+  width: min(1200px, 90%);
+  margin: 0 auto;
+}
+
+/* =========================================
+   GLOW EFFECTS
+========================================= */
+
+.footer-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+.footer-glow-left {
+  top: -230px;
+  left: -180px;
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.16) 0%,
+    transparent 70%
+  );
+}
+
+.footer-glow-right {
+  top: -80px;
+  right: -160px;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.13) 0%,
+    transparent 70%
+  );
+}
+
+/* =========================================
+   FOOTER GRID
+========================================= */
+
+.tracex-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+  gap: 55px;
+  padding-bottom: 55px;
+}
+
+/* =========================================
+   BRAND
+========================================= */
+
+.footer-brand h2 {
+  margin: 0 0 18px;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.footer-brand p {
+  max-width: 340px;
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.footer-tagline {
+  display: inline-block;
+  margin-top: 18px;
+  color: #38bdf8;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   FOOTER COLUMNS
+========================================= */
+
+.footer-column h3 {
+  margin: 0 0 22px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.footer-column button {
+  display: block;
+  margin-bottom: 13px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #94a3b8;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.footer-column button:hover {
+  color: #38bdf8;
+  transform: translateX(4px);
+}
+
+/* =========================================
+   NEWSLETTER
+========================================= */
+
+.footer-newsletter p {
+  margin: 0 0 18px;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.footer-subscribe {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-subscribe input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #263449;
+  border-radius: 8px;
+  outline: none;
+  background: #172033;
+  color: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.footer-subscribe input::placeholder {
+  color: #64748b;
+}
+
+.footer-subscribe input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.footer-subscribe button {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #38bdf8;
+  color: #082f49;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.footer-subscribe button:hover {
+  background: #7dd3fc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+}
+
+/* =========================================
+   FOOTER BOTTOM
+========================================= */
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 28px;
+  border-top: 1px solid #1e293b;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* =========================================
+   SOCIAL ICONS
+========================================= */
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #64748b;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.social-link svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.social-link svg path {
+  fill: currentColor;
+  stroke: none;
+}
+
+.social-link:hover {
+  transform: translateY(-5px);
+}
+
+.social-link.instagram:hover {
+  color: #e1306c;
+}
+
+.social-link.facebook:hover {
+  color: #1877f2;
+}
+
+.social-link.twitter:hover {
+  color: #ffffff;
+}
+
+.social-link.email:hover {
+  color: #10b981;
+}
+
+/* =========================================
+   GIANT MARQUEE
+========================================= */
+
+.footer-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #1e1e1e 0%, #000000 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-marquee-track {
+  display: inline-flex;
+  width: max-content;
+  animation: tracexMarquee 22s linear infinite;
+}
+
+.footer-marquee-track span {
+  display: inline-block;
+  padding: 0 30px;
+  color: transparent;
+  font-size: clamp(80px, 15vw, 230px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -5px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+  transition:
+    color 0.3s ease,
+    -webkit-text-stroke 0.3s ease;
+}
+
+.footer-marquee-track span:hover {
+  color: rgba(255, 255, 255, 0.8);
+  -webkit-text-stroke: 2px #ffffff;
+  text-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+}
+
+@keyframes tracexMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .tracex-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 45px 35px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tracex-footer {
+    padding: 55px 0 25px;
+  }
+
+  .tracex-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding-bottom: 40px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-socials {
+    gap: 18px;
+  }
+
+  .footer-marquee-track span {
+    font-size: 100px;
+  }
+}

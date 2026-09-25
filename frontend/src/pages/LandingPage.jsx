@@ -7,6 +7,7 @@ import FAQ from "../components/Landing/FAQ.jsx";
 import LandingCTA from "../components/Landing/LandingCTA.jsx";
 import PageTransition from "../PageTransition.jsx";
 import ScrollReveal from "../ScrollReveal.jsx";
+import LandingFooter from "../components/Landing/LandingFooter.jsx";
 
 function LandingPage() {
     return (
@@ -36,6 +37,8 @@ function LandingPage() {
                 <ScrollReveal>
                     <LandingCTA />
                 </ScrollReveal>
+
+                <LandingFooter />
 
             </main>
         </PageTransition>

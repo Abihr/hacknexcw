@@ -11,7 +11,7 @@ import Investigation from "./components/Investigation/Investigation.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import FundFlow from "./components/FundFlow/FundFlow.jsx";
 import NetworkMap from "./components/NetworkMap/NetworkMap.jsx";
-import Footer from "./components/Footer/Footer.jsx";
+import LandingFooter from "./components/Landing/LandingFooter.jsx";
 
 import PageTransition from "./PageTransition.jsx";
 import ScrollReveal from "./ScrollReveal.jsx";
@@ -43,9 +43,12 @@ function InvestigationPage() {
           <NetworkMap />
         </ScrollReveal>
 
-        <ScrollReveal>
+        {/* <ScrollReveal>
           <Footer />
-        </ScrollReveal>
+        </ScrollReveal> */}
+
+        <LandingFooter />
+        
       </>
     </PageTransition>
   );

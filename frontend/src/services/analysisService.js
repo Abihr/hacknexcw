@@ -1,3 +1,4 @@
+
 import { analyzeWalletAPI } from "./api.js";
 
 /**
@@ -9,6 +10,8 @@ import { analyzeWalletAPI } from "./api.js";
  * - bnb
  * - polygon
  * - base-sepolia
+ * - base
+ * - solana
  */
 export async function analyzeWallet({
     wallet,
@@ -32,6 +35,7 @@ export async function analyzeWallet({
         "bnb",
         "polygon",
         "base-sepolia",
+        "base",
         "solana",
     ];
 
@@ -112,3 +116,4 @@ export async function analyzeWallet({
 
     return response;
 }
+

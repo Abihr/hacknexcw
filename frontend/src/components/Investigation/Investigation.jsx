@@ -41,6 +41,7 @@ function Investigation() {
                 "BNB Chain",
                 "Polygon",
                 "Base Sepolia",
+                "Base Mainnet",
             ].includes(blockchain) &&
             !/^0x[a-fA-F0-9]{40}$/.test(trimmedWallet)
         ) {
@@ -88,6 +89,7 @@ function Investigation() {
                 "BNB Chain": "bnb",
                 Polygon: "polygon",
                 "Base Sepolia": "base-sepolia",
+                "Base Mainnet": "base",
                 Solana: "solana",
             };
 
@@ -338,6 +340,10 @@ function Investigation() {
 
                             <option value="Base Sepolia">
                                 Base Sepolia
+                            </option>
+
+                            <option value="Base Mainnet">
+                                Base Mainnet
                             </option>
 
                             <option value="Solana">
@@ -631,3 +637,4 @@ function Investigation() {
 }
 
 export default Investigation;
+

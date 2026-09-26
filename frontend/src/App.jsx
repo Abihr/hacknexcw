@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LandingPage from "./pages/LandingPage.jsx";
@@ -18,6 +17,7 @@ import ScrollReveal from "./ScrollReveal.jsx";
 
 import ProtectedRoute from "./ProtectedRoute.jsx";
 
+import AboutTraceX from "./pages/AboutTraceX.jsx";
 
 function InvestigationPage() {
   return (
@@ -48,34 +48,22 @@ function InvestigationPage() {
         </ScrollReveal> */}
 
         <LandingFooter />
-        
       </>
     </PageTransition>
   );
 }
 
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Landing Page */}
-        <Route
-          path="/"
-          element={<LandingPage />}
-        />
+        <Route path="/" element={<LandingPage />} />
 
         {/* Authentication */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+        <Route path="/signup" element={<Signup />} />
 
         {/* Protected Investigation Page */}
         <Route
@@ -86,11 +74,11 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        {/* About section */}
+        <Route path="/about" element={<AboutTraceX />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
 
 export default App;

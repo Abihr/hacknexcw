@@ -89,6 +89,22 @@ function LandingFooter() {
             </div>
           </div>
 
+          <div className="footer-credits">
+            <button
+              type="button"
+              onClick={() => navigate("/about")}
+              className="credits-button"
+            >
+              <span className="credits-icon">✦</span>
+              <span>
+                <small>MEET THE TEAM</small>
+                <strong>TraceX Credits</strong>
+              </span>
+              <span className="credits-arrow">↗</span>
+            </button>
+          </div>
+          
+
           {/* Footer Bottom */}
           <div className="footer-bottom">
             <p>© 2026 TraceX. All rights reserved.</p>
